@@ -1,14 +1,48 @@
 import React, { useState } from 'react'
 import './Slider.css'
 import dataslider from './dataSlider'
+import BtnSlider from './BtnSlider'
 
 function Slider() {
 
   const [slideAnim, setSlideAnim] = useState({
     index: 1,
-    inProgress: false
+    inProgress: false // pour prévenir le spam click
   })
 
+  const nextSlide = () => {
+    if(slideAnim.index !== dataslider.length && !slideAnim.inProgress){
+      setSlideAnim({ index: slideAnim.index + 1, inProgress: true })
+      
+      setTimeout(() => {
+        setSlideAnim({ index: slideAnim.index + 1, inProgress: false })
+      }, 400)
+    }
+    else if (slideAnim.index === dataslider.length && !slideAnim.inProgress) {
+      setSlideAnim({ index: 1, inProgress: true });
+
+      setTimeout(() => {
+        setSlideAnim({ index: 1, inProgress: false });
+      }, 400);
+    }
+  }
+
+  const prevSlide = () => {
+    if(slideAnim.index !== 1 && !slideAnim.inProgress){
+      setSlideAnim({ index: slideAnim.index - 1, inProgress: true })
+
+      setTimeout(() => {
+        setSlideAnim({ index: slideAnim.index - 1, inProgress: false });
+      }, 400);
+    }
+    else if(slideAnim.index === 1 && !slideAnim.inProgress){
+      setSlideAnim({ index: 5, inProgress: true })
+
+      setTimeout(() => {
+        setSlideAnim({ index: 5, inProgress: false });
+      }, 400);
+    }
+  }
 
 
   return (
@@ -29,6 +63,8 @@ function Slider() {
           </div>
         )
       })}
+      <BtnSlider moveSlide={nextSlide} direction={"next"}/>
+      <BtnSlider moveSlide={prevSlide} direction={"prev"}/>
     </div>
   )
 }
